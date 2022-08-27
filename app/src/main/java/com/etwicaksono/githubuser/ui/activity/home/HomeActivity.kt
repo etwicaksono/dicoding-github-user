@@ -3,8 +3,10 @@ package com.etwicaksono.githubuser.ui.activity.home
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
@@ -26,7 +28,8 @@ class HomeActivity : AppCompatActivity() {
         val apiService = RetrofitService.getInstance()
         val userRepository = UserRepository(apiService)
 
-        binding.rvUsers.adapter = userPagerAdapter
+        binding.rvUsers.adapter =
+            userPagerAdapter.withLoadStateFooter(UserLoadStateAdapter(userPagerAdapter::retry))
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
 
         viewModel = ViewModelProvider(
@@ -35,14 +38,28 @@ class HomeActivity : AppCompatActivity() {
         )[UserListViewModel::class.java]
 
         viewModel.apply {
-            errorMessage.observe(this@HomeActivity){
-                Toast.makeText(this@HomeActivity,it,Toast.LENGTH_SHORT).show()
+            errorMessage.observe(this@HomeActivity) {
+                Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
+            }
+
+            hasInternet(this@HomeActivity).observe(this@HomeActivity) {
+                if (it == false) {
+                    Toast.makeText(this@HomeActivity, "Internet unavailable", Toast.LENGTH_LONG)
+                        .show()
+                    binding.progressBar.isVisible = false
+                }
             }
         }
 
-        lifecycleScope.launch{
-            viewModel.getUsersList().observe(this@HomeActivity){
-                it?.let { userPagerAdapter.submitData(lifecycle,it) }
+        userPagerAdapter.addLoadStateListener { loadState ->
+            binding.progressBar.isVisible = firstLoading
+            if (loadState.refresh is LoadState.NotLoading || loadState.append is LoadState.NotLoading) firstLoading =
+                false
+        }
+
+        lifecycleScope.launch {
+            viewModel.getUsersList().observe(this@HomeActivity) {
+                it?.let { userPagerAdapter.submitData(lifecycle, it) }
             }
         }
     }
