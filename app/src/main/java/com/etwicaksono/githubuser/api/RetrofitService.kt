@@ -1,6 +1,7 @@
 package com.etwicaksono.githubuser.api
 
 import androidx.viewbinding.BuildConfig
+import com.etwicaksono.githubuser.entity.UserDetail
 import com.etwicaksono.githubuser.entity.UsersListItem
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,11 +9,15 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RetrofitService {
     @GET("users")
     suspend fun getUsersList(@Query("since") since: Int = 0): Response<List<UsersListItem>>
+
+    @GET("users/{username}")
+    suspend fun getUserDetail(@Path("username") username:String): Response<UserDetail>
 
     companion object {
         var retrofitService: RetrofitService? = null
