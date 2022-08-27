@@ -13,6 +13,9 @@ data class UsersList(
 
 @Parcelize
 data class UsersListItem(
+	@field:SerializedName("id")
+	val id: Int,
+
 	@field:SerializedName("login")
 	val username: String? = null,
 

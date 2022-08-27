@@ -13,7 +13,7 @@ import com.etwicaksono.githubuser.entity.UsersListItem
 class UserPagerAdapter:PagingDataAdapter<UsersListItem,UserPagerAdapter.ViewHolder>(UserComparator) {
     object UserComparator : DiffUtil.ItemCallback<UsersListItem>() {
         override fun areItemsTheSame(oldItem: UsersListItem, newItem: UsersListItem): Boolean {
-            return oldItem.username==newItem.username
+            return oldItem.id==newItem.id
         }
 
         override fun areContentsTheSame(oldItem: UsersListItem, newItem: UsersListItem): Boolean {
