@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Github User</string>
     <string name="retry">Retry</string>
+    <string name="repositories">Repositories</string>
+    <string name="following">Following</string>
+    <string name="follower">Follower</string>
 </resources>
