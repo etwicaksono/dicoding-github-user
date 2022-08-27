@@ -4,16 +4,23 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.etwicaksono.githubuser.entity.UsersListItem
 import com.etwicaksono.githubuser.repository.UserRepository
 
 class HomeViewModel(private val userRepository:UserRepository):ViewModel() {
+    class Factory constructor(private val repository:UserRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return if(modelClass.isAssignableFrom(HomeViewModel::class.java)){
+                HomeViewModel(this.repository) as T
+            }else{
+                throw IllegalArgumentException("ViewModel Not Found")
+            }
+
+        }
+    }
 
     val errorMessage=MutableLiveData<String>()
 
