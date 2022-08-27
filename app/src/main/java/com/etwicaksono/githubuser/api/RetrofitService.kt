@@ -1,6 +1,6 @@
 package com.etwicaksono.githubuser.api
 
-import androidx.viewbinding.BuildConfig
+import com.etwicaksono.githubuser.BuildConfig
 import com.etwicaksono.githubuser.entity.UserDetail
 import com.etwicaksono.githubuser.entity.UsersListItem
 import okhttp3.OkHttpClient
