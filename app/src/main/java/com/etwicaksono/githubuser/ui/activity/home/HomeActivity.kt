@@ -1,4 +1,4 @@
-package com.etwicaksono.githubuser.ui.activity
+package com.etwicaksono.githubuser.ui.activity.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
