@@ -18,15 +18,15 @@ interface RetrofitService {
         var retrofitService: RetrofitService? = null
         fun getInstance(): RetrofitService {
             if (retrofitService == null) {
-                val loggingInterceptor=if(BuildConfig.DEBUG){
+                val loggingInterceptor = if (BuildConfig.DEBUG) {
                     HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-                }else{
+                } else {
                     HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
                 }
 
-                val client = OkHttpClient.Builder().addInterceptor { chain->
+                val client = OkHttpClient.Builder().addInterceptor { chain ->
                     val request = chain.request()
-                    val builder = request.newBuilder().method(request.method,request.body)
+                    val builder = request.newBuilder().method(request.method, request.body)
                     val mutatedRequest = builder.build()
                     val response = chain.proceed(mutatedRequest)
                     response
@@ -37,7 +37,7 @@ interface RetrofitService {
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build()
-                retrofitService=retrofit.create(RetrofitService::class.java)
+                retrofitService = retrofit.create(RetrofitService::class.java)
             }
             return retrofitService!!
         }

@@ -7,6 +7,9 @@ import com.etwicaksono.githubuser.entity.UsersListItem
 
 class UserPagingSource(private val apiService: RetrofitService) :
     PagingSource<Int, UsersListItem>() {
+
+    private var lastDataId = 0
+
     override fun getRefreshKey(state: PagingState<Int, UsersListItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
@@ -16,14 +19,15 @@ class UserPagingSource(private val apiService: RetrofitService) :
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UsersListItem> {
         return try {
-            val position = params.key ?: 0
-            val response = apiService.getUsersList(position)
+            val position = params.key ?: 1
+            val response = apiService.getUsersList(lastDataId)
+            lastDataId = response.body()?.last()?.id ?: 0
             LoadResult.Page(
                 data = response.body()!!,
-                prevKey = if (position == 0) null else position.minus(1),
+                prevKey = if (position == 1) null else position.minus(1),
                 nextKey = position.plus(1)
             )
-        }catch (e:Exception){
+        } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }
