@@ -10,11 +10,11 @@ import androidx.paging.cachedIn
 import com.etwicaksono.githubuser.entity.UsersListItem
 import com.etwicaksono.githubuser.repository.UserRepository
 
-class HomeViewModel(private val userRepository:UserRepository):ViewModel() {
+class UserListViewModel(private val userRepository:UserRepository):ViewModel() {
     class Factory constructor(private val repository:UserRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return if(modelClass.isAssignableFrom(HomeViewModel::class.java)){
-                HomeViewModel(this.repository) as T
+            return if(modelClass.isAssignableFrom(UserListViewModel::class.java)){
+                UserListViewModel(this.repository) as T
             }else{
                 throw IllegalArgumentException("ViewModel Not Found")
             }
