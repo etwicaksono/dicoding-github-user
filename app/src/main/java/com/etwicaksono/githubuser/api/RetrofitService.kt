@@ -1,7 +1,7 @@
 package com.etwicaksono.githubuser.api
 
 import androidx.viewbinding.BuildConfig
-import com.etwicaksono.githubuser.entity.UsersList
+import com.etwicaksono.githubuser.entity.UsersListItem
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface RetrofitService {
     @GET("users")
-    suspend fun getUsersList(@Query("since") since: Int = 0): Response<UsersList>
+    suspend fun getUsersList(@Query("since") since: Int = 0): Response<List<UsersListItem>>
 
     companion object {
         var retrofitService: RetrofitService? = null
