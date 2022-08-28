@@ -16,7 +16,7 @@ class UserLoadStateAdapter(private val retry:()->Unit):LoadStateAdapter<UserLoad
         private val binding = ItemRowLoadingBinding.bind(itemView)
         private val progressBar = binding.progressBar
         private val message = binding.progressMessage
-        private val retry = binding.btnRetry
+        private val retry = binding.btnRetry.also { it.setOnClickListener { retry() } }
 
         fun bind(loadState: LoadState){
             if(loadState is LoadState.Error){
