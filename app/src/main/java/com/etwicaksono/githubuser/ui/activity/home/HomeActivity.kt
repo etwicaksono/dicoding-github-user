@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
 import com.etwicaksono.githubuser.repository.UserRepository
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -53,13 +54,31 @@ class HomeActivity : AppCompatActivity() {
 
         userPagerAdapter.addLoadStateListener { loadState ->
             binding.progressBar.isVisible = firstLoading
-            if (loadState.refresh is LoadState.NotLoading || loadState.append is LoadState.NotLoading) firstLoading =
-                false
+            if (loadState.refresh is LoadState.NotLoading || loadState.append is LoadState.NotLoading) {
+                firstLoading = false
+
+                val error = when {
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
+                }
+                error?.let {
+                    binding.noDataAccepted.isVisible = userPagerAdapter.itemCount < 1
+                }
+            }
         }
+
 
         lifecycleScope.launch {
             viewModel.getUsersList().observe(this@HomeActivity) {
                 it?.let { userPagerAdapter.submitData(lifecycle, it) }
+            }
+
+            userPagerAdapter.loadStateFlow.collectLatest {
+                if (it.refresh is LoadState.NotLoading) {
+                    binding.noDataAccepted.isVisible = userPagerAdapter.itemCount < 1
+                }
             }
         }
     }

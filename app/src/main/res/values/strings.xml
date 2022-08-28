@@ -4,4 +4,5 @@
     <string name="repositories">Repositories</string>
     <string name="following">Following</string>
     <string name="follower">Follower</string>
+    <string name="no_data_exist_to_display">No Data Exist to Display</string>
 </resources>

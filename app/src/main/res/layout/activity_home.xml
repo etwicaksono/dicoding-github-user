@@ -27,5 +27,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
+    <TextView
+        android:id="@+id/no_data_accepted"
+        style="@style/black_bold_33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data_exist_to_display"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
