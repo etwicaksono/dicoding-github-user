@@ -5,6 +5,7 @@ import com.etwicaksono.githubuser.entity.UserDetail
 import com.etwicaksono.githubuser.entity.UsersListItem
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,7 +18,7 @@ interface RetrofitService {
     suspend fun getUsersList(@Query("since") since: Int = 0): Response<List<UsersListItem>>
 
     @GET("users/{username}")
-    suspend fun getUserDetail(@Path("username") username:String): Response<UserDetail>
+    fun getUserDetail(@Path("username") username:String): Call<UserDetail>
 
     companion object {
         var retrofitService: RetrofitService? = null

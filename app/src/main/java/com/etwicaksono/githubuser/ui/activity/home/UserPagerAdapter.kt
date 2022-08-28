@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.etwicaksono.githubuser.R
 import com.etwicaksono.githubuser.databinding.ItemRowUserBinding
 import com.etwicaksono.githubuser.entity.UsersListItem
-import com.etwicaksono.githubuser.ui.activity.DetailUserActivity
+import com.etwicaksono.githubuser.ui.activity.detail_user.DetailUserActivity
 
 class UserPagerAdapter :
     PagingDataAdapter<UsersListItem, UserPagerAdapter.ViewHolder>(UserComparator) {
