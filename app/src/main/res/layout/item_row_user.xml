@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/item_row_user"
     android:padding="8dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -17,7 +18,7 @@
 
     <TextView
         android:id="@+id/tv_username"
-        style="@style/black_bold_33"
+        style="@style/grey_500_bold_33"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

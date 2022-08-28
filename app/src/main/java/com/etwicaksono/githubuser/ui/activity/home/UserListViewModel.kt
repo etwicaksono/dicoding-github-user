@@ -18,7 +18,6 @@ class UserListViewModel(private val userRepository:UserRepository):ViewModel() {
             }else{
                 throw IllegalArgumentException("ViewModel Not Found")
             }
-
         }
     }
 
