@@ -1,8 +1,8 @@
 package com.etwicaksono.githubuser.ui.activity.detail_user
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.etwicaksono.githubuser.R
