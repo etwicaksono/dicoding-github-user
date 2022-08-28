@@ -9,8 +9,8 @@ import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.entity.UsersListItem
 import com.etwicaksono.githubuser.paging.UserPagingSource
 
-class UserRepository constructor(private val apiService:RetrofitService) {
-    fun getUsersList():LiveData<PagingData<UsersListItem>>{
+class UserRepository constructor(private val apiService: RetrofitService) {
+    fun getUsersList(): LiveData<PagingData<UsersListItem>> {
         return Pager(
             config = PagingConfig(pageSize = 30),
             pagingSourceFactory = { UserPagingSource(apiService) }

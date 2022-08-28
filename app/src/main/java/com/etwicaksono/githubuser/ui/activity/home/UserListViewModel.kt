@@ -10,20 +10,20 @@ import androidx.paging.cachedIn
 import com.etwicaksono.githubuser.entity.UsersListItem
 import com.etwicaksono.githubuser.repository.UserRepository
 
-class UserListViewModel(private val userRepository:UserRepository):ViewModel() {
-    class Factory constructor(private val repository:UserRepository) : ViewModelProvider.Factory {
+class UserListViewModel(private val userRepository: UserRepository) : ViewModel() {
+    class Factory constructor(private val repository: UserRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return if(modelClass.isAssignableFrom(UserListViewModel::class.java)){
+            return if (modelClass.isAssignableFrom(UserListViewModel::class.java)) {
                 UserListViewModel(this.repository) as T
-            }else{
+            } else {
                 throw IllegalArgumentException("ViewModel Not Found")
             }
         }
     }
 
-    val errorMessage=MutableLiveData<String>()
+    val errorMessage = MutableLiveData<String>()
 
-    fun getUsersList():LiveData<PagingData<UsersListItem>>{
+    fun getUsersList(): LiveData<PagingData<UsersListItem>> {
         return userRepository.getUsersList().cachedIn(viewModelScope)
     }
 

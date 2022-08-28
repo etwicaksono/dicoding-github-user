@@ -18,7 +18,7 @@ interface RetrofitService {
     suspend fun getUsersList(@Query("since") since: Int = 0): Response<List<UsersListItem>>
 
     @GET("users/{username}")
-    fun getUserDetail(@Path("username") username:String): Call<UserDetail>
+    fun getUserDetail(@Path("username") username: String): Call<UserDetail>
 
     companion object {
         var retrofitService: RetrofitService? = null
@@ -33,7 +33,7 @@ interface RetrofitService {
                 val client = OkHttpClient.Builder().addInterceptor { chain ->
                     val request = chain.request()
                     val builder = request.newBuilder()
-                        .header("Authorization",BuildConfig.GITHUB_KEY)
+                        .header("Authorization", BuildConfig.GITHUB_KEY)
                         .method(request.method, request.body)
                     val mutatedRequest = builder.build()
                     val response = chain.proceed(mutatedRequest)
