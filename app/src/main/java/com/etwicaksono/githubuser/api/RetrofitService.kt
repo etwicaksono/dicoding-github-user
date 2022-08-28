@@ -32,7 +32,9 @@ interface RetrofitService {
 
                 val client = OkHttpClient.Builder().addInterceptor { chain ->
                     val request = chain.request()
-                    val builder = request.newBuilder().method(request.method, request.body)
+                    val builder = request.newBuilder()
+                        .header("Authorization",BuildConfig.GITHUB_KEY)
+                        .method(request.method, request.body)
                     val mutatedRequest = builder.build()
                     val response = chain.proceed(mutatedRequest)
                     response
