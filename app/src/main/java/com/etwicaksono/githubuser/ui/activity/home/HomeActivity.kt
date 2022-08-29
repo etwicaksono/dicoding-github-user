@@ -10,6 +10,8 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
+import com.etwicaksono.githubuser.paging.UserLoadStateAdapter
+import com.etwicaksono.githubuser.paging.UserPagerAdapter
 import com.etwicaksono.githubuser.repository.UserRepository
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -18,7 +20,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val userPagerAdapter = UserPagerAdapter()
-    private lateinit var viewModel: UserListViewModel
+    private lateinit var viewModel: HomeViewModel
     private var firstLoading = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +37,8 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            UserListViewModel.Factory(userRepository)
-        )[UserListViewModel::class.java]
+            HomeViewModel.Factory(userRepository)
+        )[HomeViewModel::class.java]
 
         viewModel.apply {
             errorMessage.observe(this@HomeActivity) {

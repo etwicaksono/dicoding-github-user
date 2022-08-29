@@ -1,4 +1,4 @@
-package com.etwicaksono.githubuser.ui.activity.home
+package com.etwicaksono.githubuser.paging
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
