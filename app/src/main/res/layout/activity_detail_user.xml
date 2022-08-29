@@ -31,80 +31,66 @@
             app:layout_constraintTop_toBottomOf="@id/tv_name"
             tools:src="@tools:sample/avatars" />
 
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/flex_wrapper"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_repository"
+            style="@style/grey_500_bold_23"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:alignItems="center"
-            app:flexDirection="row"
-            app:flexWrap="wrap"
-            app:justifyContent="space_around"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="@id/description"
+            app:layout_constraintStart_toStartOf="@id/description"
+            app:layout_constraintTop_toBottomOf="@id/iv_user"
+            tools:text="1.234" />
+
+        <TextView
+            android:id="@+id/description"
+            style="@style/grey_500_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/repositories"
+            app:layout_constraintEnd_toStartOf="@id/des_fol"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_user">
+            app:layout_constraintTop_toBottomOf="@id/tv_repository" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_follower"
+            style="@style/grey_500_bold_23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/des_fol"
+            app:layout_constraintStart_toStartOf="@id/des_fol"
+            app:layout_constraintTop_toTopOf="@id/tv_repository"
+            tools:text="1.234" />
 
-                <TextView
-                    android:id="@+id/tv_repository"
-                    style="@style/grey_500_bold_23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="1.234" />
+        <TextView
+            android:id="@+id/des_fol"
+            style="@style/grey_500_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/follower"
+            app:layout_constraintEnd_toStartOf="@id/des_following"
+            app:layout_constraintStart_toEndOf="@id/description"
+            app:layout_constraintTop_toBottomOf="@id/tv_follower" />
 
-                <TextView
-                    style="@style/grey_500_15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/repositories" />
-            </LinearLayout>
+        <TextView
+            android:id="@+id/tv_following"
+            style="@style/grey_500_bold_23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/des_following"
+            app:layout_constraintStart_toStartOf="@id/des_following"
+            app:layout_constraintTop_toTopOf="@id/tv_follower"
+            tools:text="1.234" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_follower"
-                    style="@style/grey_500_bold_23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="1.234" />
-
-                <TextView
-                    style="@style/grey_500_15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/follower" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_following"
-                    style="@style/grey_500_bold_23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="1.234" />
-
-                <TextView
-                    style="@style/grey_500_15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/following" />
-            </LinearLayout>
-        </com.google.android.flexbox.FlexboxLayout>
+        <TextView
+            android:id="@+id/des_following"
+            style="@style/grey_500_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/following"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/des_fol"
+            app:layout_constraintTop_toBottomOf="@id/tv_following" />
 
         <TextView
             android:id="@+id/tv_html_url"
@@ -115,7 +101,7 @@
             android:gravity="center_vertical"
             app:drawableStartCompat="@drawable/ic_logo_github_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flex_wrapper"
+            app:layout_constraintTop_toBottomOf="@id/description"
             tools:text="https://github.com/mojombo" />
 
         <TextView
