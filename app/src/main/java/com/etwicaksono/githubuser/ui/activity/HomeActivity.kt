@@ -1,4 +1,4 @@
-package com.etwicaksono.githubuser.ui.activity.home
+package com.etwicaksono.githubuser.ui.activity
 
 import android.os.Bundle
 import android.widget.Toast
@@ -14,6 +14,7 @@ import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
 import com.etwicaksono.githubuser.paging.UserLoadStateAdapter
 import com.etwicaksono.githubuser.paging.UserPagerAdapter
 import com.etwicaksono.githubuser.repository.UserRepository
+import com.etwicaksono.githubuser.ui.fragment.user_list.UserListViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -21,7 +22,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val userPagerAdapter = UserPagerAdapter()
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: UserListViewModel
     private var firstLoading = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +43,8 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            HomeViewModel.Factory(userRepository)
-        )[HomeViewModel::class.java]
+            UserListViewModel.Factory(userRepository)
+        )[UserListViewModel::class.java]
 
         viewModel.apply {
             errorMessage.observe(this@HomeActivity) {

@@ -14,10 +14,13 @@ class UserRepository constructor(
     private val context: Context,
     private val apiService: RetrofitService
 ) {
-    fun getUsersList(): LiveData<PagingData<UsersListItem>> {
+    fun getUsersList(
+        page: String = "home",
+        username: String = ""
+    ): LiveData<PagingData<UsersListItem>> {
         return Pager(
             config = PagingConfig(pageSize = 30),
-            pagingSourceFactory = { UserPagingSource(context, apiService) }
+            pagingSourceFactory = { UserPagingSource(context, apiService, page, username) }
         ).liveData
     }
 }
