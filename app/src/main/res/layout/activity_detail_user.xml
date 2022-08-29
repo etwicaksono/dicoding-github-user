@@ -28,7 +28,6 @@
                     android:id="@+id/iv_user"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginTop="24dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:src="@tools:sample/avatars" />
@@ -169,6 +168,18 @@
         android:layout_height="match_parent"
         android:id="@+id/view_pager"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fab_favorite"
+        android:src="@drawable/ic_favorite_border_black_48"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="48dp"
+        style="@style/favorite_button"
+        app:borderWidth="0dp"
+        android:contentDescription="@string/favorite_button" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
