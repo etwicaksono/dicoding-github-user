@@ -1,9 +1,10 @@
 package com.etwicaksono.githubuser.ui.fragment.user_list
 
-import android.content.Context
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
-import android.os.Build
+import android.net.NetworkRequest
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -30,26 +31,30 @@ class UserListViewModel(private val userRepository: UserRepository) : ViewModel(
         return userRepository.getUsersList(page, username).cachedIn(viewModelScope)
     }
 
-    fun hasInternet(context: Context): LiveData<Boolean> {
-        val result = MutableLiveData<Boolean>()
-        result.value = false
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork ?: return result
-            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return result
-            when {
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> result.value =
-                    true
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> result.value =
-                    true
-                else -> result.value = false
+    fun hasInternet(): LiveData<Boolean> {
+        val isConnected = MutableLiveData<Boolean>()
+
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .build()
+
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                isConnected.value = true
             }
-            return result
-        } else {
-            val networkInfo = connectivityManager.activeNetworkInfo ?: return result
-            result.value = networkInfo.isConnected
-            return result
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                isConnected.value = false
+            }
         }
+
+        val connectivityManager= getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        connectivityManager.requestNetwork(networkRequest,networkCallback)
+
+        return isConnected
     }
 }
