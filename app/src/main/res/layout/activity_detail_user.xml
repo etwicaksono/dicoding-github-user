@@ -12,24 +12,24 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_user"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
         <TextView
             android:id="@+id/tv_name"
             style="@style/grey_500_bold_33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_user"
             tools:text="Tom Preston Werner" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_user"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_name"
-            tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/tv_repository"
@@ -37,9 +37,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            app:layout_constraintVertical_bias="0.25"
             app:layout_constraintEnd_toEndOf="@id/description"
             app:layout_constraintStart_toStartOf="@id/description"
-            app:layout_constraintTop_toBottomOf="@id/iv_user"
+            app:layout_constraintTop_toTopOf="@id/iv_user"
+            app:layout_constraintBottom_toBottomOf="@id/iv_user"
             tools:text="1.234" />
 
         <TextView
@@ -49,7 +51,7 @@
             android:layout_height="wrap_content"
             android:text="@string/repositories"
             app:layout_constraintEnd_toStartOf="@id/des_fol"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_user"
             app:layout_constraintTop_toBottomOf="@id/tv_repository" />
 
         <TextView
@@ -96,12 +98,12 @@
             android:id="@+id/tv_html_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             app:drawableStartCompat="@drawable/ic_logo_github_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
             tools:text="https://github.com/mojombo" />
 
         <TextView
