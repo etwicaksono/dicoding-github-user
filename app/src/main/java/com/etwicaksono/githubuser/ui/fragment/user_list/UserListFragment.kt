@@ -1,11 +1,10 @@
-package com.etwicaksono.githubuser.ui.fragment.userlist
+package com.etwicaksono.githubuser.ui.fragment.user_list
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.etwicaksono.githubuser.R
 import com.etwicaksono.githubuser.databinding.FragmentUserListBinding
 
 private const val ARG_TYPE = "USER_LIST_TYPE"

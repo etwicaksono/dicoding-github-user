@@ -6,4 +6,5 @@
     <string name="follower">Follower</string>
     <string name="no_data_exist_to_display">No Data Exist to Display</string>
     <string name="favorite_button">favorite button</string>
+    <string name="users_not_found">Users not found</string>
 </resources>
