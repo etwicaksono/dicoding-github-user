@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -15,6 +16,7 @@ import com.etwicaksono.githubuser.paging.UserLoadStateAdapter
 import com.etwicaksono.githubuser.paging.UserPagerAdapter
 import com.etwicaksono.githubuser.repository.UserRepository
 import com.etwicaksono.githubuser.ui.fragment.user_list.UserListViewModel
+import com.etwicaksono.githubuser.util.ConnectivityStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -29,9 +31,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkConnectivity()
 
         val apiService = RetrofitService.getInstance()
-        val userRepository = UserRepository(this,apiService)
+        val userRepository = UserRepository(this, apiService)
 
         binding.rvUsers.adapter =
             userPagerAdapter.withLoadStateFooter(UserLoadStateAdapter(userPagerAdapter::retry))
@@ -51,11 +54,15 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
             }
 
-            hasInternet(this@HomeActivity).observe(this@HomeActivity) {
-                if (it == false) {
-                    Toast.makeText(this@HomeActivity, "Internet unavailable", Toast.LENGTH_LONG)
-                        .show()
-                    binding.progressBar.isVisible = false
+            lifecycleScope.launch {
+                getUsersList().observe(this@HomeActivity) {
+                    it?.let { userPagerAdapter.submitData(lifecycle, it) }
+                }
+
+                userPagerAdapter.loadStateFlow.collectLatest {
+                    if (it.refresh is LoadState.NotLoading) {
+                        binding.noDataAccepted.isVisible = userPagerAdapter.itemCount < 1
+                    }
                 }
             }
         }
@@ -76,17 +83,15 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
-
-        lifecycleScope.launch {
-            viewModel.getUsersList().observe(this@HomeActivity) {
-                it?.let { userPagerAdapter.submitData(lifecycle, it) }
-            }
-
-            userPagerAdapter.loadStateFlow.collectLatest {
-                if (it.refresh is LoadState.NotLoading) {
-                    binding.noDataAccepted.isVisible = userPagerAdapter.itemCount < 1
-                }
+    private fun checkConnectivity() {
+        val connectivity = ConnectivityStatus(this)
+        connectivity.observe(this) { isConnected ->
+            if (!isConnected) {
+                Toast.makeText(this@HomeActivity, "Internet unavailable", Toast.LENGTH_LONG)
+                    .show()
+                binding.progressBar.isVisible = false
             }
         }
     }

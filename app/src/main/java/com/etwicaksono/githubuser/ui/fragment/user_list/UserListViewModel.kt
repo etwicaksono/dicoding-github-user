@@ -31,39 +31,4 @@ class UserListViewModel(private val userRepository: UserRepository) : ViewModel(
     ): LiveData<PagingData<UsersListItem>> {
         return userRepository.getUsersList(page, username).cachedIn(viewModelScope)
     }
-
-    fun hasInternet(context: Context): LiveData<Boolean> {
-        val isConnected = MutableLiveData<Boolean>()
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCallback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                super.onAvailable(network)
-                isConnected.postValue(true)
-            }
-
-            override fun onLost(network: Network) {
-                super.onLost(network)
-                isConnected.postValue(false)
-            }
-
-            override fun onUnavailable() {
-                super.onUnavailable()
-                isConnected.postValue(false)
-            }
-        }
-        val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-            .build()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && connectivityManager.activeNetwork == null) {
-            isConnected.postValue(false)
-        }
-
-        connectivityManager.registerNetworkCallback(networkRequest,networkCallback)
-
-        return isConnected
-    }
 }
