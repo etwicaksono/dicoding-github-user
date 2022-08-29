@@ -1,5 +1,6 @@
 package com.etwicaksono.githubuser.repository
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -9,11 +10,14 @@ import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.entity.UsersListItem
 import com.etwicaksono.githubuser.paging.UserPagingSource
 
-class UserRepository constructor(private val apiService:RetrofitService) {
-    fun getUsersList():LiveData<PagingData<UsersListItem>>{
+class UserRepository constructor(
+    private val context: Context,
+    private val apiService: RetrofitService
+) {
+    fun getUsersList(): LiveData<PagingData<UsersListItem>> {
         return Pager(
             config = PagingConfig(pageSize = 30),
-            pagingSourceFactory = { UserPagingSource(apiService) }
+            pagingSourceFactory = { UserPagingSource(context, apiService) }
         ).liveData
     }
 }

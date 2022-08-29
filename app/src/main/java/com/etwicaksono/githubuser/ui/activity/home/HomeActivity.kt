@@ -1,12 +1,13 @@
 package com.etwicaksono.githubuser.ui.activity.home
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
@@ -29,11 +30,15 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val apiService = RetrofitService.getInstance()
-        val userRepository = UserRepository(apiService)
+        val userRepository = UserRepository(this,apiService)
 
         binding.rvUsers.adapter =
             userPagerAdapter.withLoadStateFooter(UserLoadStateAdapter(userPagerAdapter::retry))
-        binding.rvUsers.layoutManager = LinearLayoutManager(this)
+        binding.rvUsers.apply {
+            val layoutManager = LinearLayoutManager(this@HomeActivity)
+            this.layoutManager = layoutManager
+            addItemDecoration(DividerItemDecoration(this@HomeActivity, layoutManager.orientation))
+        }
 
         viewModel = ViewModelProvider(
             this,
