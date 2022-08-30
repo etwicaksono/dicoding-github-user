@@ -1,13 +1,17 @@
 package com.etwicaksono.githubuser.ui.activity.detail_user
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.etwicaksono.githubuser.R
 import com.etwicaksono.githubuser.databinding.ActivityDetailUserBinding
 import com.etwicaksono.githubuser.entity.UsersListItem
+import com.etwicaksono.githubuser.paging.UserPagerAdapter
+import com.etwicaksono.githubuser.ui.fragment.user_list.UserListPagerAdapter
+import com.etwicaksono.githubuser.ui.fragment.user_list.UserListViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
@@ -15,21 +19,26 @@ import java.util.*
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
-    private val viewModel: DetailUserViewModel by viewModels()
+    private val detailUserViewModel: DetailUserViewModel by viewModels()
+    private var position = 0
+    private lateinit var titles: List<String>
+    private lateinit var username: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val actionBar = supportActionBar
         val userIntent = intent.getParcelableExtra<UsersListItem>("user")
+        val actionBar = supportActionBar
+        username = userIntent?.username.toString()
 
         actionBar?.apply {
-            "@".also { this.title = it + userIntent?.username }
+            "@".also { this.title = it + username }
             setDisplayHomeAsUpEnabled(true)
         }
-        viewModel.apply {
+
+        detailUserViewModel.apply {
             if (userIntent != null) {
                 getUserData(userIntent.username)
             }
@@ -67,6 +76,15 @@ class DetailUserActivity : AppCompatActivity() {
 
         }
 
+        val sectionPagerAdapter =
+            UserListPagerAdapter(this@DetailUserActivity, username)
+
+        binding.viewPager.adapter = sectionPagerAdapter
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            titles = sectionPagerAdapter.tabs
+            this.position = position
+            tab.text = titles[position]
+        }.attach()
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -17,7 +16,6 @@ import com.etwicaksono.githubuser.paging.UserPagerAdapter
 import com.etwicaksono.githubuser.repository.UserRepository
 import com.etwicaksono.githubuser.ui.fragment.user_list.UserListViewModel
 import com.etwicaksono.githubuser.util.ConnectivityStatus
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -57,12 +55,6 @@ class HomeActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 getUsersList().observe(this@HomeActivity) {
                     it?.let { userPagerAdapter.submitData(lifecycle, it) }
-                }
-
-                userPagerAdapter.loadStateFlow.collectLatest {
-                    if (it.refresh is LoadState.NotLoading) {
-                        binding.noDataAccepted.isVisible = userPagerAdapter.itemCount < 1
-                    }
                 }
             }
         }
