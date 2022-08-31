@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 
 private const val ARG_PAGE = "USER_LIST_TYPE"
 private const val ARG_USERNAME = "USER_LIST_USERNAME"
-private const val ARG_SIZE = "USER_LIST_SIZE"
 
 class UserListFragment : Fragment() {
 
@@ -127,12 +126,11 @@ class UserListFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(page: String, username: String, size: Int) =
+        fun newInstance(page: String, username: String) =
             UserListFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PAGE, page)
                     putString(ARG_USERNAME, username)
-                    putInt(ARG_SIZE, size)
                 }
             }
     }
