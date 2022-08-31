@@ -1,6 +1,7 @@
 package com.etwicaksono.githubuser.ui.activity.detail_user
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -8,9 +9,8 @@ import com.bumptech.glide.Glide
 import com.etwicaksono.githubuser.R
 import com.etwicaksono.githubuser.databinding.ActivityDetailUserBinding
 import com.etwicaksono.githubuser.entity.UsersListItem
-import com.etwicaksono.githubuser.paging.UserPagerAdapter
 import com.etwicaksono.githubuser.ui.fragment.user_list.UserListPagerAdapter
-import com.etwicaksono.githubuser.ui.fragment.user_list.UserListViewModel
+import com.etwicaksono.githubuser.util.ConnectivityStatus
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -28,6 +28,7 @@ class DetailUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkConnectivity()
 
         val userIntent = intent.getParcelableExtra<UsersListItem>("user")
         val actionBar = supportActionBar
@@ -78,7 +79,6 @@ class DetailUserActivity : AppCompatActivity() {
 
         val sectionPagerAdapter =
             UserListPagerAdapter(this@DetailUserActivity, username)
-
         binding.viewPager.adapter = sectionPagerAdapter
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             titles = sectionPagerAdapter.tabs
@@ -107,5 +107,16 @@ class DetailUserActivity : AppCompatActivity() {
 
         return result.toString()
 
+    }
+
+    private fun checkConnectivity() {
+        val connectivity = ConnectivityStatus(this)
+        connectivity.observe(this) { isConnected ->
+            if (!isConnected) {
+                Toast.makeText(this@DetailUserActivity, "Internet unavailable", Toast.LENGTH_LONG)
+                    .show()
+                binding.progressBar.isVisible = false
+            }
+        }
     }
 }
