@@ -12,9 +12,6 @@ import retrofit2.Response
 
 class DetailUserViewModel : ViewModel() {
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
 
@@ -22,12 +19,10 @@ class DetailUserViewModel : ViewModel() {
     val userData: LiveData<UserDetail> = _userData
 
     fun getUserData(username: String) {
-        _isLoading.value = true
         val api = RetrofitService.getInstance()
         val client = api.getUserDetail(username)
         client.enqueue(object : Callback<UserDetail> {
             override fun onResponse(call: Call<UserDetail>, response: Response<UserDetail>) {
-                _isLoading.value = false
                 if (response.isSuccessful) {
                     _userData.postValue(response.body())
                 } else {
@@ -38,7 +33,6 @@ class DetailUserViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<UserDetail>, t: Throwable) {
-                _isLoading.value = false
                 val message = "getUserData onFailure: ${t.message.toString()}"
                 Log.e(this@DetailUserViewModel::class.java.simpleName, message)
                 _errorMessage.value = message

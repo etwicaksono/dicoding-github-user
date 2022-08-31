@@ -44,10 +44,6 @@ class DetailUserActivity : AppCompatActivity() {
                 getUserData(userIntent.username)
             }
 
-            isLoading.observe(this@DetailUserActivity) { isLoading ->
-                binding.progressBar.isVisible = isLoading
-            }
-
             userData.observe(this@DetailUserActivity) { userDetail ->
                 binding.apply {
                     Glide.with(this@DetailUserActivity)
@@ -114,7 +110,6 @@ class DetailUserActivity : AppCompatActivity() {
             if (!isConnected) {
                 Toast.makeText(this@DetailUserActivity, "Internet unavailable", Toast.LENGTH_LONG)
                     .show()
-                binding.progressBar.isVisible = false
             }
         }
     }
