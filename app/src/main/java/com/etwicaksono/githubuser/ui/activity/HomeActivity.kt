@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
-import com.etwicaksono.githubuser.paging.UserLoadStateAdapter
-import com.etwicaksono.githubuser.paging.UserPagerAdapter
+import com.etwicaksono.githubuser.paging.UserLoadStatePagingAdapter
+import com.etwicaksono.githubuser.paging.UserListPagingAdapter
 import com.etwicaksono.githubuser.repository.UserRepository
 import com.etwicaksono.githubuser.ui.fragment.user_list.UserListViewModel
 import com.etwicaksono.githubuser.util.ConnectivityStatus
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private val userPagerAdapter = UserPagerAdapter()
+    private val userListPagingAdapter = UserListPagingAdapter()
     private lateinit var viewModel: UserListViewModel
     private var firstLoading = true
 
@@ -35,7 +35,7 @@ class HomeActivity : AppCompatActivity() {
         val userRepository = UserRepository(this, apiService)
 
         binding.rvUsers.adapter =
-            userPagerAdapter.withLoadStateFooter(UserLoadStateAdapter(userPagerAdapter::retry))
+            userListPagingAdapter.withLoadStateFooter(UserLoadStatePagingAdapter(userListPagingAdapter::retry))
         binding.rvUsers.apply {
             val layoutManager = LinearLayoutManager(this@HomeActivity)
             this.layoutManager = layoutManager
@@ -54,12 +54,12 @@ class HomeActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 getUsersList().observe(this@HomeActivity) {
-                    it?.let { userPagerAdapter.submitData(lifecycle, it) }
+                    it?.let { userListPagingAdapter.submitData(lifecycle, it) }
                 }
             }
         }
 
-        userPagerAdapter.addLoadStateListener { loadState ->
+        userListPagingAdapter.addLoadStateListener { loadState ->
             binding.progressBar.isVisible = firstLoading
             if (loadState.refresh is LoadState.NotLoading || loadState.append is LoadState.NotLoading) {
                 firstLoading = false
@@ -71,7 +71,7 @@ class HomeActivity : AppCompatActivity() {
                     else -> null
                 }
                 error?.let {
-                    binding.noDataAccepted.isVisible = userPagerAdapter.itemCount < 1
+                    binding.noDataAccepted.isVisible = userListPagingAdapter.itemCount < 1
                 }
             }
         }

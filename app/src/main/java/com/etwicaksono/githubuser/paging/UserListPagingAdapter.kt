@@ -12,8 +12,8 @@ import com.etwicaksono.githubuser.databinding.ItemRowUserBinding
 import com.etwicaksono.githubuser.entity.UsersListItem
 import com.etwicaksono.githubuser.ui.activity.detail_user.DetailUserActivity
 
-class UserPagerAdapter :
-    PagingDataAdapter<UsersListItem, UserPagerAdapter.ViewHolder>(UserComparator) {
+class UserListPagingAdapter :
+    PagingDataAdapter<UsersListItem, UserListPagingAdapter.ViewHolder>(UserComparator) {
     object UserComparator : DiffUtil.ItemCallback<UsersListItem>() {
         override fun areItemsTheSame(oldItem: UsersListItem, newItem: UsersListItem): Boolean {
             return oldItem.id == newItem.id

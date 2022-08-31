@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progress_bar"
+        app:layout_constraintTop_toBottomOf="@id/btn_retry"
         tools:text="@tools:sample/lorem" />
 
     <Button
@@ -30,7 +30,6 @@
         android:layout_marginBottom="8dp"
         android:text="@string/retry"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/progress_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />

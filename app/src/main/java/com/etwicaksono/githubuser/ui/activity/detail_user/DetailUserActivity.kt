@@ -48,31 +48,30 @@ class DetailUserActivity : AppCompatActivity() {
                 binding.progressBar.isVisible = isLoading
             }
 
-            userData.observe(this@DetailUserActivity) {
+            userData.observe(this@DetailUserActivity) { userDetail ->
                 binding.apply {
                     Glide.with(this@DetailUserActivity)
-                        .load(it.avatarUrl)
+                        .load(userDetail.avatarUrl)
                         .placeholder(R.drawable.default_image)
                         .into(ivUser)
 
-                    tvName.text = it.name
-                    tvRepository.text = numberFormat(it.publicRepos.toString())
-                    tvFollower.text = numberFormat(it.followers.toString())
-                    tvFollowing.text = numberFormat(it.following.toString())
-                    it.htmlUrl.let {
+                    tvName.text = userDetail.name
+                    tvRepository.text = numberFormat(userDetail.publicRepos.toString())
+                    tvFollower.text = numberFormat(userDetail.followers.toString())
+                    tvFollowing.text = numberFormat(userDetail.following.toString())
+                    userDetail.htmlUrl.let {
                         tvHtmlUrl.text = it
                         tvHtmlUrl.isVisible = !it.isNullOrEmpty()
                     }
-                    it.company.let {
+                    userDetail.company.let {
                         tvCompany.text = it
                         tvCompany.isVisible = !it.isNullOrEmpty()
                     }
-                    it.location.let {
+                    userDetail.location.let {
                         tvLocation.text = it
                         tvLocation.isVisible = !it.isNullOrEmpty()
                     }
                 }
-
             }
 
         }

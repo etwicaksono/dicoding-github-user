@@ -5,20 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.etwicaksono.githubuser.R
 import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.FragmentUserListBinding
-import com.etwicaksono.githubuser.paging.UserLoadStateAdapter
-import com.etwicaksono.githubuser.paging.UserPagerAdapter
+import com.etwicaksono.githubuser.paging.UserListPagingAdapter
+import com.etwicaksono.githubuser.paging.UserLoadStatePagingAdapter
 import com.etwicaksono.githubuser.repository.UserRepository
+import kotlinx.coroutines.launch
 
 private const val ARG_PAGE = "USER_LIST_TYPE"
 private const val ARG_USERNAME = "USER_LIST_USERNAME"
+private const val ARG_SIZE = "USER_LIST_SIZE"
 
 class UserListFragment : Fragment() {
 
@@ -26,10 +31,11 @@ class UserListFragment : Fragment() {
     private val binding get() = _binding
     private var _viewModel: UserListViewModel? = null
     private val viewModel get() = _viewModel
-    private val userPagerAdapter = UserPagerAdapter()
+    private val userListPagingAdapter = UserListPagingAdapter()
 
     private var page: String = "home"
     private var username: String? = null
+    private var firstLoading = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,32 +71,68 @@ class UserListFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(context, layoutManager.orientation)
 
         binding?.rvUsers?.apply {
-            adapter=userPagerAdapter.withLoadStateFooter(UserLoadStateAdapter(userPagerAdapter::retry))
+            adapter =
+                userListPagingAdapter.withLoadStateFooter(
+                    UserLoadStatePagingAdapter(
+                        userListPagingAdapter::retry
+                    )
+                )
             this.layoutManager = layoutManager
             addItemDecoration(itemDecoration)
         }
 
-        viewModel?.getUsersList(page, username ?: "")?.observe(viewLifecycleOwner) { listUser ->
-            if (listUser != null) {
-                binding?.tvEmpty?.isVisible = false
-            } else {
-                binding?.tvEmpty?.isVisible = true
-                binding?.tvEmpty?.text = when (page) {
-                    context?.getString(R.string.follower) -> context?.getString(R.string.follower_not_found)
-                    context?.getString(R.string.following) -> context?.getString(R.string.following_not_found)
-                    else -> context?.getString(R.string.users_not_found)
+        viewModel?.apply {
+            errorMessage.observe(viewLifecycleOwner) {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }
+
+            lifecycleScope.launch {
+                getUsersList(page, username ?: "")
+                    .observe(viewLifecycleOwner) { listUser ->
+                        if (listUser != null) {
+                            binding?.tvEmpty?.isVisible = false
+                            userListPagingAdapter.submitData(lifecycle, listUser)
+                        } else {
+                            binding?.tvEmpty?.isVisible = true
+                            binding?.tvEmpty?.text = when (page) {
+                                context?.getString(R.string.follower) -> context?.getString(R.string.follower_not_found)
+                                context?.getString(R.string.following) -> context?.getString(R.string.following_not_found)
+                                else -> context?.getString(R.string.users_not_found)
+                            }
+                        }
+                    }
+
+            }
+        }
+
+        userListPagingAdapter.addLoadStateListener { loadState ->
+            binding?.progressBar?.isVisible = firstLoading
+            if (loadState.refresh is LoadState.NotLoading || loadState.append is LoadState.NotLoading) {
+                firstLoading = false
+
+                val error = when {
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
+                }
+                error.let {
+                    binding?.tvEmpty?.isVisible =
+                        userListPagingAdapter.itemCount < 1 && !firstLoading
                 }
             }
         }
+
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(page: String, username: String) =
+        fun newInstance(page: String, username: String, size: Int) =
             UserListFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PAGE, page)
                     putString(ARG_USERNAME, username)
+                    putInt(ARG_SIZE, size)
                 }
             }
     }

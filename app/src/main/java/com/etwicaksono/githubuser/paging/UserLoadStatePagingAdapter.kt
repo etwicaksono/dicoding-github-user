@@ -9,23 +9,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.etwicaksono.githubuser.R
 import com.etwicaksono.githubuser.databinding.ItemRowLoadingBinding
 
-class UserLoadStateAdapter(private val retry:()->Unit):LoadStateAdapter<UserLoadStateAdapter.LoadStateViewHolder>() {
-    class LoadStateViewHolder(parent:ViewGroup,retry: () -> Unit):RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(
-        R.layout.item_row_loading,parent,false)) {
+class UserLoadStatePagingAdapter(private val retry: () -> Unit) :
+    LoadStateAdapter<UserLoadStatePagingAdapter.LoadStateViewHolder>() {
+    class LoadStateViewHolder(parent: ViewGroup, retry: () -> Unit) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context).inflate(
+            R.layout.item_row_loading, parent, false
+        )
+    ) {
 
         private val binding = ItemRowLoadingBinding.bind(itemView)
         private val progressBar = binding.progressBar
         private val message = binding.progressMessage
         private val retry = binding.btnRetry.also { it.setOnClickListener { retry() } }
 
-        fun bind(loadState: LoadState){
-            if(loadState is LoadState.Error){
-                message.text=loadState.error.localizedMessage
+        fun bind(loadState: LoadState) {
+            if (loadState is LoadState.Error) {
+                message.text = loadState.error.localizedMessage
             }
 
-            progressBar.isVisible=loadState is LoadState.Loading
-            retry.isVisible=loadState is LoadState.Error
-            message.isVisible=loadState is LoadState.Error
+            progressBar.isVisible = loadState is LoadState.Loading
+            retry.isVisible = loadState is LoadState.Error
+            message.isVisible = loadState is LoadState.Error
         }
 
     }
@@ -35,6 +39,6 @@ class UserLoadStateAdapter(private val retry:()->Unit):LoadStateAdapter<UserLoad
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
-        return LoadStateViewHolder(parent,retry)
+        return LoadStateViewHolder(parent, retry)
     }
 }
