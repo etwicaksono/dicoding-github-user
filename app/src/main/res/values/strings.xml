@@ -9,4 +9,7 @@
     <string name="users_not_found">Users not found</string>
     <string name="follower_not_found">Follower Not Found</string>
     <string name="following_not_found">Following Not Found</string>
+    <string name="search_user">Search for Github\'s users</string>
+    <string name="input_username">Input Username</string>
+    <string name="page_title_home">Github User Search</string>
 </resources>

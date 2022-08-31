@@ -6,14 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.HomeActivity">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/sv_user"
+        app:queryHint="@string/search_user"
+        android:layoutDirection="rtl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:iconifiedByDefault="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_users"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_user"
         tools:listitem="@layout/item_row_user" />
 
     <ProgressBar
@@ -33,11 +45,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_data_exist_to_display"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

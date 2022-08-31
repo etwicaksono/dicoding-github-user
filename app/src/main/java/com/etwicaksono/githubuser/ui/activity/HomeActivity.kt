@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.etwicaksono.githubuser.R
 import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
 import com.etwicaksono.githubuser.paging.UserLoadStatePagingAdapter
@@ -29,6 +30,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.title=getString(R.string.page_title_home)
         checkConnectivity()
 
         val apiService = RetrofitService.getInstance()
