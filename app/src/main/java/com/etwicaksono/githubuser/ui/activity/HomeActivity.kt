@@ -30,7 +30,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.title=getString(R.string.page_title_home)
+        supportActionBar?.title = getString(R.string.page_title_home)
         checkConnectivity()
 
         val apiService = RetrofitService.getInstance()
@@ -77,7 +77,43 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+
+        val searchManager =
+            this@HomeActivity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        binding.svUser.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(this@HomeActivity.componentName))
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+                private var searchJob: Job? = null
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    searchJob?.cancel()
+                    searchJob=coroutineScope.launch {
+                        newText?.let {
+                            delay(500)
+                            if(it.isEmpty()){
+                                queryHint=context.getString(R.string.input_username)
+                                viewModel.getUsersList()
+                            }else{
+                                queryHint=context.getString(R.string.search_user)
+                                viewModel.searchUser(newText)
+                            }
+                        }
+                    }
+                    return false
+                }
+
+            })
+
+//             Toast.makeText(this@HomeActivity,"halo halo",Toast.LENGTH_SHORT).show()
+
+        }
     }
+
 
     private fun checkConnectivity() {
         val connectivity = ConnectivityStatus(this)

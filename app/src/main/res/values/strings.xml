@@ -12,4 +12,5 @@
     <string name="search_user">Search for Github\'s users</string>
     <string name="input_username">Input Username</string>
     <string name="page_title_home">Github User Search</string>
+    <string name="search">search</string>
 </resources>

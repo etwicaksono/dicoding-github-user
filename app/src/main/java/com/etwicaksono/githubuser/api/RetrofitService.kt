@@ -32,6 +32,9 @@ interface RetrofitService {
     @GET("users/{username}")
     fun getUserDetail(@Path("username") username: String): Call<UserDetail>
 
+    @GET("search/users")
+    suspend fun searchUser(@Query("q")q:String):Response<List<UsersListItem>>
+
     companion object {
         var retrofitService: RetrofitService? = null
         fun getInstance(): RetrofitService {
