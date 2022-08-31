@@ -25,4 +25,8 @@ class UserListViewModel(private val userRepository: UserRepository) : ViewModel(
     ): LiveData<PagingData<UsersListItem>> {
         return userRepository.getUsersList(page, username).cachedIn(viewModelScope)
     }
+
+    fun searchUser(keyword:String): LiveData<PagingData<UsersListItem>> {
+        return userRepository.searchUser(keyword).cachedIn(viewModelScope)
+    }
 }

@@ -1,8 +1,11 @@
 package com.etwicaksono.githubuser.ui.activity
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -12,12 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.etwicaksono.githubuser.R
 import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
-import com.etwicaksono.githubuser.paging.UserLoadStatePagingAdapter
 import com.etwicaksono.githubuser.paging.UserListPagingAdapter
+import com.etwicaksono.githubuser.paging.UserLoadStatePagingAdapter
 import com.etwicaksono.githubuser.repository.UserRepository
 import com.etwicaksono.githubuser.ui.fragment.user_list.UserListViewModel
 import com.etwicaksono.githubuser.util.ConnectivityStatus
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class HomeActivity : AppCompatActivity() {
 
