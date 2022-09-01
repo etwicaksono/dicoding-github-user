@@ -40,7 +40,11 @@ class HomeActivity : AppCompatActivity() {
         val userRepository = UserRepository(this, apiService)
 
         binding.rvUsers.adapter =
-            userListPagingAdapter.withLoadStateFooter(UserLoadStatePagingAdapter(userListPagingAdapter::retry))
+            userListPagingAdapter.withLoadStateFooter(
+                UserLoadStatePagingAdapter(
+                    userListPagingAdapter::retry
+                )
+            )
         binding.rvUsers.apply {
             val layoutManager = LinearLayoutManager(this@HomeActivity)
             this.layoutManager = layoutManager
@@ -53,12 +57,13 @@ class HomeActivity : AppCompatActivity() {
         )[UserListViewModel::class.java]
 
         viewModel.apply {
+            viewModel.getUsersList()
             errorMessage.observe(this@HomeActivity) {
                 Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
             }
 
             lifecycleScope.launch {
-                getUsersList().observe(this@HomeActivity) {
+                userList.observe(this@HomeActivity) {
                     it?.let { userListPagingAdapter.submitData(lifecycle, it) }
                 }
             }
@@ -95,15 +100,17 @@ class HomeActivity : AppCompatActivity() {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     searchJob?.cancel()
-                    searchJob=coroutineScope.launch {
-                        newText?.let {
+                    searchJob = coroutineScope.launch {
+                        newText?.let { keyword ->
                             delay(500)
-                            if(it.isEmpty()){
-                                queryHint=context.getString(R.string.input_username)
-                                viewModel.getUsersList()
-                            }else{
-                                queryHint=context.getString(R.string.search_user)
+                            if (keyword.isEmpty()) {
+//                                queryHint = context.getString(R.string.input_username)
+//                                viewModel.getUsersList()
+                            } else {
+//                                queryHint = context.getString(R.string.search_user)
                                 viewModel.searchUser(newText)
+                                Toast.makeText(this@HomeActivity, "halo halo", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }
                     }
@@ -112,7 +119,6 @@ class HomeActivity : AppCompatActivity() {
 
             })
 
-//             Toast.makeText(this@HomeActivity,"halo halo",Toast.LENGTH_SHORT).show()
 
         }
     }

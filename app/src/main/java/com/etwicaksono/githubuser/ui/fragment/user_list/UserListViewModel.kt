@@ -1,8 +1,10 @@
 package com.etwicaksono.githubuser.ui.fragment.user_list
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.etwicaksono.githubuser.entity.UsersListItem
 import com.etwicaksono.githubuser.repository.UserRepository
 
@@ -18,15 +20,17 @@ class UserListViewModel(private val userRepository: UserRepository) : ViewModel(
     }
 
     val errorMessage = MutableLiveData<String>()
+    private val _userList = MutableLiveData<PagingData<UsersListItem>>()
+    val userList: LiveData<PagingData<UsersListItem>> = _userList
 
     fun getUsersList(
         page: String = "home",
         username: String = ""
-    ): LiveData<PagingData<UsersListItem>> {
-        return userRepository.getUsersList(page, username).cachedIn(viewModelScope)
+    ) {
+        _userList.postValue(userRepository.getUsersList(page, username).value)
     }
 
-    fun searchUser(keyword:String): LiveData<PagingData<UsersListItem>> {
-        return userRepository.searchUser(keyword).cachedIn(viewModelScope)
+    fun searchUser(keyword: String) {
+        _userList.postValue(userRepository.searchUser(keyword).value)
     }
 }

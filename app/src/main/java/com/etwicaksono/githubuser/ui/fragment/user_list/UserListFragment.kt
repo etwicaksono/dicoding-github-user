@@ -87,7 +87,7 @@ class UserListFragment : Fragment() {
 
             lifecycleScope.launch {
                 getUsersList(page, username ?: "")
-                    .observe(viewLifecycleOwner) { listUser ->
+                    userList.observe(viewLifecycleOwner) { listUser ->
                         if (listUser != null) {
                             binding?.tvEmpty?.isVisible = false
                             userListPagingAdapter.submitData(lifecycle, listUser)
