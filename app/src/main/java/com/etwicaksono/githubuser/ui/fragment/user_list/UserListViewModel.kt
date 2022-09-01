@@ -18,11 +18,10 @@ class UserListViewModel(private val userRepository: UserRepository) : ViewModel(
     }
 
     val errorMessage = MutableLiveData<String>()
+    val page = MutableLiveData("home")
+    val username = MutableLiveData("")
 
-    fun getUsersList(
-        page: String = "home",
-        username: String = ""
-    ): LiveData<PagingData<UsersListItem>> {
+    fun getUsersList(): LiveData<PagingData<UsersListItem>> {
         return userRepository.getUsersList(page, username).cachedIn(viewModelScope)
     }
 }

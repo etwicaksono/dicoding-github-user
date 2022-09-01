@@ -40,7 +40,11 @@ class HomeActivity : AppCompatActivity() {
         val userRepository = UserRepository(this, apiService)
 
         binding.rvUsers.adapter =
-            userListPagingAdapter.withLoadStateFooter(UserLoadStatePagingAdapter(userListPagingAdapter::retry))
+            userListPagingAdapter.withLoadStateFooter(
+                UserLoadStatePagingAdapter(
+                    userListPagingAdapter::retry
+                )
+            )
         binding.rvUsers.apply {
             val layoutManager = LinearLayoutManager(this@HomeActivity)
             this.layoutManager = layoutManager
@@ -95,15 +99,20 @@ class HomeActivity : AppCompatActivity() {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     searchJob?.cancel()
-                    searchJob=coroutineScope.launch {
+                    searchJob = coroutineScope.launch {
                         newText?.let {
                             delay(500)
-                            if(it.isEmpty()){
-                                queryHint=context.getString(R.string.input_username)
-                                viewModel.getUsersList()
-                            }else{
-                                queryHint=context.getString(R.string.search_user)
-                                viewModel.searchUser(newText)
+                            if (it.isEmpty()) {
+//                                queryHint=context.getString(R.string.input_username)
+
+                                viewModel.page.postValue("home")
+                                viewModel.username.postValue("")
+                            } else {
+                                viewModel.page.value =
+                                    context?.getString(R.string.search).toString()
+                                viewModel.username.value = it
+//                                queryHint=context.getString(R.string.search_user)
+
                             }
                         }
                     }

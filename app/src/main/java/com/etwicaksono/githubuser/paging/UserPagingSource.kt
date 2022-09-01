@@ -1,6 +1,7 @@
 package com.etwicaksono.githubuser.paging
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.etwicaksono.githubuser.R
@@ -10,8 +11,8 @@ import com.etwicaksono.githubuser.entity.UsersListItem
 class UserPagingSource(
     private val context: Context,
     private val apiService: RetrofitService,
-    private val page: String = "home",
-    private val username: String = ""
+    private val page: LiveData<String>,
+    private val username: LiveData<String>
 ) :
     PagingSource<Int, UsersListItem>() {
 
@@ -28,18 +29,22 @@ class UserPagingSource(
         return try {
             val position = params.key ?: 1
             val response = when {
-                page == context.getString(R.string.follower) && username != "" -> apiService.getUserFollowers(
-                    username, position
-                )
-                page == context.getString(R.string.following) && username != "" -> apiService.getUserFollowing(
-                    username, position
-                )
-                page == context.getString(R.string.search) -> apiService.searchUser(username)
+                page.value == context.getString(R.string.follower) && username.value != "" -> username.value?.let {
+                    apiService.getUserFollowers(
+                        it, position
+                    )
+                }
+                page.value == context.getString(R.string.following) && username.value != "" -> username.value?.let {
+                    apiService.getUserFollowing(
+                        it, position
+                    )
+                }
+                page.value == context.getString(R.string.search) -> apiService.searchUser(username.value?:"")
                 else -> apiService.getUsersList(lastDataId)
             }
-            lastDataId = response.body()?.last()?.id ?: 0
+            lastDataId = response?.body()?.last()?.id ?: 0
             LoadResult.Page(
-                data = response.body()!!,
+                data = response?.body()!!,
                 prevKey = if (position == 1) null else position.minus(1),
                 nextKey = position.plus(1)
             )
