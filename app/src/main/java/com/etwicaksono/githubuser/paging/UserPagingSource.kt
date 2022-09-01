@@ -11,8 +11,7 @@ class UserPagingSource(
     private val context: Context,
     private val apiService: RetrofitService,
     private val page: String = "home",
-    private val username: String = "",
-    private val keyword: String = "",
+    private val username: String = ""
 ) :
     PagingSource<Int, UsersListItem>() {
 
@@ -35,7 +34,7 @@ class UserPagingSource(
                 page == context.getString(R.string.following) && username != "" -> apiService.getUserFollowing(
                     username, position
                 )
-                page == context.getString(R.string.search) && username != "" -> apiService.searchUser(keyword)
+                page == context.getString(R.string.search) -> apiService.searchUser(username)
                 else -> apiService.getUsersList(lastDataId)
             }
             lastDataId = response.body()?.last()?.id ?: 0
