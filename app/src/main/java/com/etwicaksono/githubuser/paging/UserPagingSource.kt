@@ -35,7 +35,6 @@ class UserPagingSource(
                 page == context.getString(R.string.following) && username != "" -> apiService.getUserFollowing(
                     username, position
                 )
-                page == context.getString(R.string.search) && username != "" -> apiService.searchUser(keyword)
                 else -> apiService.getUsersList(lastDataId)
             }
             lastDataId = response.body()?.last()?.id ?: 0

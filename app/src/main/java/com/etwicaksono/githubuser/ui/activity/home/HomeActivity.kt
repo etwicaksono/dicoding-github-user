@@ -4,21 +4,15 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.etwicaksono.githubuser.R
-import com.etwicaksono.githubuser.api.RetrofitService
 import com.etwicaksono.githubuser.databinding.ActivityHomeBinding
 import com.etwicaksono.githubuser.paging.UserListPagingAdapter
-import com.etwicaksono.githubuser.paging.UserLoadStatePagingAdapter
-import com.etwicaksono.githubuser.repository.UserRepository
-import com.etwicaksono.githubuser.ui.fragment.user_list.UserListViewModel
 import com.etwicaksono.githubuser.util.ConnectivityStatus
 import kotlinx.coroutines.*
 
@@ -26,7 +20,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val userListPagingAdapter = UserListPagingAdapter()
-    private lateinit var viewModel: UserListViewModel
+    private val viewModel: HomeViewModel by viewModels()
     private var firstLoading = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,53 +30,25 @@ class HomeActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.page_title_home)
         checkConnectivity()
 
-        val apiService = RetrofitService.getInstance()
-        val userRepository = UserRepository(this, apiService)
-
-        binding.rvUsers.adapter =
-            userListPagingAdapter.withLoadStateFooter(
-                UserLoadStatePagingAdapter(
-                    userListPagingAdapter::retry
-                )
-            )
+        val mHomeAdapter = HomeAdapter()
         binding.rvUsers.apply {
             val layoutManager = LinearLayoutManager(this@HomeActivity)
+            adapter = mHomeAdapter
             this.layoutManager = layoutManager
             addItemDecoration(DividerItemDecoration(this@HomeActivity, layoutManager.orientation))
         }
 
-        viewModel = ViewModelProvider(
-            this,
-            UserListViewModel.Factory(userRepository)
-        )[UserListViewModel::class.java]
-
         viewModel.apply {
-            viewModel.getUsersList()
             errorMessage.observe(this@HomeActivity) {
                 Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
             }
-
-            lifecycleScope.launch {
-                getUsersList().observe(this@HomeActivity) {
-                    it?.let { userListPagingAdapter.submitData(lifecycle, it) }
+            listUsers.observe(this@HomeActivity) { listUser ->
+                if (listUser != null) {
+                    mHomeAdapter.submitList(listUser)
                 }
             }
-        }
-
-        userListPagingAdapter.addLoadStateListener { loadState ->
-            binding.progressBar.isVisible = firstLoading
-            if (loadState.refresh is LoadState.NotLoading || loadState.append is LoadState.NotLoading) {
-                firstLoading = false
-
-                val error = when {
-                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-                    else -> null
-                }
-                error?.let {
-                    binding.noDataAccepted.isVisible = userListPagingAdapter.itemCount < 1
-                }
+            isLoading.observe(this@HomeActivity) { isLoading ->
+                binding.progressBar.isVisible = isLoading
             }
         }
 
