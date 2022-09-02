@@ -22,7 +22,7 @@ class UserListViewModel(private val userRepository: UserRepository) : ViewModel(
     fun getUsersList(
         page: String = "home",
         username: String = ""
-    ):LiveData<PagingData<UsersListItem>> {
+    ): LiveData<PagingData<UsersListItem>> {
         return userRepository.getUsersList(page, username).cachedIn(viewModelScope)
     }
 }

@@ -54,14 +54,20 @@ class HomeViewModel : ViewModel() {
                     response.body()?.let {
                         _listUsers.postValue(it.items)
                     }
-                }else {
-                    Log.e(HomeViewModel::class.java.simpleName, "searchUser onResponse failure: ${response.message()}")
+                } else {
+                    Log.e(
+                        HomeViewModel::class.java.simpleName,
+                        "searchUser onResponse failure: ${response.message()}"
+                    )
                 }
             }
 
             override fun onFailure(call: Call<ResponseSearchUser>, t: Throwable) {
                 _isLoading.value = false
-                Log.e(HomeViewModel::class.java.simpleName, "searchUser onFailure: ${t.message.toString()}")
+                Log.e(
+                    HomeViewModel::class.java.simpleName,
+                    "searchUser onFailure: ${t.message.toString()}"
+                )
             }
 
         })
