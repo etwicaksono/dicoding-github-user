@@ -24,11 +24,4 @@ class UserRepository constructor(
             pagingSourceFactory = { UserPagingSource(context, apiService, page, username) }
         ).liveData
     }
-
-    fun searchUser(q: String): LiveData<PagingData<UsersListItem>> {
-        return Pager(
-            config = PagingConfig(pageSize = 30),
-            pagingSourceFactory = { UserPagingSource(context, apiService, "search", keyword = q) }
-        ).liveData
-    }
 }
