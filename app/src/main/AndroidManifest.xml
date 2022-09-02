@@ -20,7 +20,7 @@
             android:name=".ui.activity.detail_user.DetailUserActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.HomeActivity"
+            android:name=".ui.activity.home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.SplashScreenActivity"

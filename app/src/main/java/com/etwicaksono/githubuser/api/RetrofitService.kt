@@ -17,6 +17,9 @@ interface RetrofitService {
     @GET("users")
     suspend fun getUsersList(@Query("since") since: Int = 0): Response<List<UsersListItem>>
 
+    @GET("users")
+    fun getAllUser(): Call<List<UsersListItem>>
+
     @GET("users/{username}/followers")
     suspend fun getUserFollowers(
         @Path("username") username: String,

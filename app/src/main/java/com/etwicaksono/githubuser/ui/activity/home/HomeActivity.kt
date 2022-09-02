@@ -1,4 +1,4 @@
-package com.etwicaksono.githubuser.ui.activity
+package com.etwicaksono.githubuser.ui.activity.home
 
 import android.app.SearchManager
 import android.content.Context
