@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
             }
 
             lifecycleScope.launch {
-                userList.observe(this@HomeActivity) {
+                getUsersList().observe(this@HomeActivity) {
                     it?.let { userListPagingAdapter.submitData(lifecycle, it) }
                 }
             }
@@ -108,7 +108,6 @@ class HomeActivity : AppCompatActivity() {
 //                                viewModel.getUsersList()
                             } else {
 //                                queryHint = context.getString(R.string.search_user)
-                                viewModel.searchUser(newText)
                                 Toast.makeText(this@HomeActivity, "halo halo", Toast.LENGTH_SHORT)
                                     .show()
                             }
