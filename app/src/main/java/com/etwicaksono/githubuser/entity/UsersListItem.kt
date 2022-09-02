@@ -6,12 +6,18 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UsersListItem(
-	@field:SerializedName("id")
-	val id: Int,
+    @field:SerializedName("id")
+    val id: Int,
 
-	@field:SerializedName("login")
-	val username: String,
+    @field:SerializedName("login")
+    val username: String,
 
-	@field:SerializedName("avatar_url")
-	val avatar: String? = null
+    @field:SerializedName("avatar_url")
+    val avatar: String? = null
+) : Parcelable
+
+@Parcelize
+data class ResponseSearchUser(
+    @field:SerializedName("items")
+    val items: List<UsersListItem>,
 ) : Parcelable

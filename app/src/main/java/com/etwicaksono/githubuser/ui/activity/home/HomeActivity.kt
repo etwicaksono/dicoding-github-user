@@ -39,9 +39,6 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewModel.apply {
-            errorMessage.observe(this@HomeActivity) {
-                Toast.makeText(this@HomeActivity, it, Toast.LENGTH_SHORT).show()
-            }
             listUsers.observe(this@HomeActivity) { listUser ->
                 if (listUser != null) {
                     mHomeAdapter.submitList(listUser)
@@ -70,12 +67,9 @@ class HomeActivity : AppCompatActivity() {
                         newText?.let { keyword ->
                             delay(500)
                             if (keyword.isEmpty()) {
-//                                queryHint = context.getString(R.string.input_username)
-//                                viewModel.getUsersList()
+                                viewModel.getAllUsers()
                             } else {
-//                                queryHint = context.getString(R.string.search_user)
-                                Toast.makeText(this@HomeActivity, "halo halo", Toast.LENGTH_SHORT)
-                                    .show()
+                                viewModel.searchUser(newText)
                             }
                         }
                     }

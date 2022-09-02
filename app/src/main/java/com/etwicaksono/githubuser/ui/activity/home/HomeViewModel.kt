@@ -1,8 +1,10 @@
 package com.etwicaksono.githubuser.ui.activity.home
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.etwicaksono.githubuser.api.RetrofitService
+import com.etwicaksono.githubuser.entity.ResponseSearchUser
 import com.etwicaksono.githubuser.entity.UsersListItem
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,8 +15,6 @@ class HomeViewModel : ViewModel() {
     val listUsers = _listUsers
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading = _isLoading
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage = _errorMessage
 
     init {
         getAllUsers()
@@ -31,14 +31,11 @@ class HomeViewModel : ViewModel() {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     _listUsers.postValue(response.body())
-                } else {
-                    _errorMessage.postValue("getAllUsers failure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<List<UsersListItem>>, t: Throwable) {
                 _isLoading.postValue(false)
-                _errorMessage.postValue("getAllUsers onFailure: ${t.message.toString()}")
             }
 
         })
@@ -47,24 +44,24 @@ class HomeViewModel : ViewModel() {
     fun searchUser(username: String) {
         _isLoading.value = true
         val client = RetrofitService.getInstance().searchUser(username)
-        client.enqueue(object : Callback<List<UsersListItem>> {
+        client.enqueue(object : Callback<ResponseSearchUser> {
             override fun onResponse(
-                call: Call<List<UsersListItem>>,
-                response: Response<List<UsersListItem>>,
+                call: Call<ResponseSearchUser>,
+                response: Response<ResponseSearchUser>,
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        _listUsers.postValue(it)
+                        _listUsers.postValue(it.items)
                     }
-                } else {
-                    _errorMessage.value = "searchUser onResponse failure: ${response.message()}"
+                }else {
+                    Log.e(HomeViewModel::class.java.simpleName, "searchUser onResponse failure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<List<UsersListItem>>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseSearchUser>, t: Throwable) {
                 _isLoading.value = false
-                _errorMessage.value = "searchUser onFailure: ${t.message.toString()}"
+                Log.e(HomeViewModel::class.java.simpleName, "searchUser onFailure: ${t.message.toString()}")
             }
 
         })
