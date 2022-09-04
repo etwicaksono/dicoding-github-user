@@ -17,7 +17,7 @@ class HomeAdapter : ListAdapter<UsersListItem, HomeAdapter.HomeViewHolder>(DIFF_
 
     class HomeViewHolder(private val binding: ItemRowUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun ImageView.loadImage(url: String?) {
+        private fun ImageView.loadImage(url: String?) {
             Glide.with(this.context)
                 .load(url)
                 .placeholder(R.drawable.default_image)

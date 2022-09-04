@@ -28,7 +28,7 @@ class UserListPagingAdapter :
 
     class ViewHolder(val view: ItemRowUserBinding) : RecyclerView.ViewHolder(view.root)
 
-    fun ImageView.loadImage(url:String?){
+    private fun ImageView.loadImage(url:String?){
         Glide.with(this.context)
                 .load(url)
                 .placeholder(R.drawable.default_image)
