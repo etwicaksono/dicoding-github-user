@@ -3,6 +3,7 @@ package com.etwicaksono.githubuser.ui.activity.home
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,13 +17,17 @@ class HomeAdapter : ListAdapter<UsersListItem, HomeAdapter.HomeViewHolder>(DIFF_
 
     class HomeViewHolder(private val binding: ItemRowUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        fun ImageView.loadImage(url: String?) {
+            Glide.with(this.context)
+                .load(url)
+                .placeholder(R.drawable.default_image)
+                .into(this)
+        }
+
         fun bind(user: UsersListItem) {
             binding.apply {
                 tvUsername.text = user.username
-                Glide.with(ivUser.context)
-                    .load(user.avatar)
-                    .placeholder(R.drawable.default_image)
-                    .into(ivUser)
+                ivUser.loadImage(user.avatar)
             }
 
             binding.itemRowUser.setOnClickListener {

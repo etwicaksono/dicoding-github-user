@@ -3,6 +3,7 @@ package com.etwicaksono.githubuser.paging
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -27,14 +28,18 @@ class UserListPagingAdapter :
 
     class ViewHolder(val view: ItemRowUserBinding) : RecyclerView.ViewHolder(view.root)
 
+    fun ImageView.loadImage(url:String?){
+        Glide.with(this.context)
+                .load(url)
+                .placeholder(R.drawable.default_image)
+                .into(this)
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = getItem(position)!!
         holder.view.apply {
             tvUsername.text = user.username
-            Glide.with(ivUser.context)
-                .load(user.avatar)
-                .placeholder(R.drawable.default_image)
-                .into(ivUser)
+            ivUser.loadImage(user.avatar)
         }
 
         holder.view.itemRowUser.setOnClickListener {

@@ -19,9 +19,7 @@ import kotlinx.coroutines.*
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private val userListPagingAdapter = UserListPagingAdapter()
     private val viewModel: HomeViewModel by viewModels()
-    private var firstLoading = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
