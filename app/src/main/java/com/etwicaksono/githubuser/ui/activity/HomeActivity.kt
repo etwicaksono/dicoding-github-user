@@ -103,15 +103,12 @@ class HomeActivity : AppCompatActivity() {
                         newText?.let {
                             delay(500)
                             if (it.isEmpty()) {
-//                                queryHint=context.getString(R.string.input_username)
-
                                 viewModel.page.postValue("home")
                                 viewModel.username.postValue("")
                             } else {
                                 viewModel.page.value =
                                     context?.getString(R.string.search).toString()
                                 viewModel.username.value = it
-//                                queryHint=context.getString(R.string.search_user)
 
                             }
                         }

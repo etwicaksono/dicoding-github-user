@@ -32,19 +32,23 @@ class UserPagingSource(
                 page.value == context.getString(R.string.follower) && username.value != "" -> username.value?.let {
                     apiService.getUserFollowers(
                         it, position
-                    )
+                    ).body()
                 }
                 page.value == context.getString(R.string.following) && username.value != "" -> username.value?.let {
                     apiService.getUserFollowing(
                         it, position
-                    )
+                    ).body()
                 }
-                page.value == context.getString(R.string.search) -> apiService.searchUser(username.value?:"")
-                else -> apiService.getUsersList(lastDataId)
+                page.value == context.getString(R.string.search) -> apiService.searchUser(
+                    username.value ?: ""
+                ).body()?.items
+                else -> {
+                    apiService.getUsersList(lastDataId).body()
+                }
             }
-            lastDataId = response?.body()?.last()?.id ?: 0
+            lastDataId = response?.last()?.id ?: 0
             LoadResult.Page(
-                data = response?.body()!!,
+                data = response!!,
                 prevKey = if (position == 1) null else position.minus(1),
                 nextKey = position.plus(1)
             )

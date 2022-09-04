@@ -1,6 +1,7 @@
 package com.etwicaksono.githubuser.api
 
 import com.etwicaksono.githubuser.BuildConfig
+import com.etwicaksono.githubuser.entity.ResponseSearchUser
 import com.etwicaksono.githubuser.entity.UserDetail
 import com.etwicaksono.githubuser.entity.UsersListItem
 import okhttp3.OkHttpClient
@@ -33,7 +34,7 @@ interface RetrofitService {
     fun getUserDetail(@Path("username") username: String): Call<UserDetail>
 
     @GET("search/users")
-    suspend fun searchUser(@Query("q")q:String):Response<List<UsersListItem>>
+    suspend fun searchUser(@Query("q")q:String):Response<ResponseSearchUser>
 
     companion object {
         var retrofitService: RetrofitService? = null

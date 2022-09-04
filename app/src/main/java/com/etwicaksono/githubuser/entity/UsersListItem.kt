@@ -15,3 +15,9 @@ data class UsersListItem(
 	@field:SerializedName("avatar_url")
 	val avatar: String? = null
 ) : Parcelable
+
+@Parcelize
+data class ResponseSearchUser(
+    @field:SerializedName("items")
+    val items: List<UsersListItem>,
+) : Parcelable
