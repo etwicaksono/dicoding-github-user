@@ -18,9 +18,6 @@ interface RetrofitService {
     @GET("users")
     suspend fun getUsersList(@Query("since") since: Int = 0): Response<List<UsersListItem>>
 
-    @GET("users")
-    fun getAllUser(@Query("per_page") per_page: Int = 100): Call<List<UsersListItem>>
-
     @GET("users/{username}/followers")
     suspend fun getUserFollowers(
         @Path("username") username: String,
@@ -37,10 +34,10 @@ interface RetrofitService {
     fun getUserDetail(@Path("username") username: String): Call<UserDetail>
 
     @GET("search/users")
-    fun searchUser(@Query("q") q: String): Call<ResponseSearchUser>
+    suspend fun searchUser(@Query("q") q: String): Response<ResponseSearchUser>
 
     companion object {
-        var retrofitService: RetrofitService? = null
+        private var retrofitService: RetrofitService? = null
         fun getInstance(): RetrofitService {
             if (retrofitService == null) {
                 val loggingInterceptor = if (BuildConfig.DEBUG) {

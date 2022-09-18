@@ -10,9 +10,8 @@ import com.etwicaksono.githubuser.entity.UsersListItem
 class UserPagingSource(
     private val context: Context,
     private val apiService: RetrofitService,
-    private val page: String = "home",
-    private val username: String = "",
-    private val keyword: String = "",
+    private val page: String,
+    private val username: String
 ) :
     PagingSource<Int, UsersListItem>() {
 
@@ -31,15 +30,23 @@ class UserPagingSource(
             val response = when {
                 page == context.getString(R.string.follower) && username != "" -> apiService.getUserFollowers(
                     username, position
-                )
+                ).body()
+
                 page == context.getString(R.string.following) && username != "" -> apiService.getUserFollowing(
                     username, position
-                )
-                else -> apiService.getUsersList(lastDataId)
+                ).body()
+
+                page == context.getString(R.string.search) -> apiService.searchUser(
+                    username
+                ).body()?.items
+
+                else -> {
+                    apiService.getUsersList(lastDataId).body()
+                }
             }
-            lastDataId = response.body()?.last()?.id ?: 0
+            lastDataId = response?.last()?.id ?: 0
             LoadResult.Page(
-                data = response.body()!!,
+                data = response!!,
                 prevKey = if (position == 1) null else position.minus(1),
                 nextKey = position.plus(1)
             )

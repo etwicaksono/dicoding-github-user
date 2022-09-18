@@ -16,8 +16,8 @@ class UserRepository constructor(
     private val apiService: RetrofitService
 ) {
     fun getUsersList(
-        page: String = "home",
-        username: String = ""
+        page: String,
+        username: String
     ): LiveData<PagingData<UsersListItem>> {
         return Pager(
             config = PagingConfig(pageSize = 30),

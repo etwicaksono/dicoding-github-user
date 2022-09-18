@@ -86,14 +86,13 @@ class UserListFragment : Fragment() {
             }
 
             lifecycleScope.launch {
-                getUsersList(page, username ?: "")
-                    .observe(viewLifecycleOwner) { listUser ->
+                getUsersList().observe(viewLifecycleOwner) { listUser ->
                         if (listUser != null) {
                             binding?.tvEmpty?.isVisible = false
                             userListPagingAdapter.submitData(lifecycle, listUser)
                         } else {
                             binding?.tvEmpty?.isVisible = true
-                            binding?.tvEmpty?.text = when (page) {
+                            binding?.tvEmpty?.text = when (page.value) {
                                 context?.getString(R.string.follower) -> context?.getString(R.string.follower_not_found)
                                 context?.getString(R.string.following) -> context?.getString(R.string.following_not_found)
                                 else -> context?.getString(R.string.users_not_found)

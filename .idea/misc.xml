@@ -4,13 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/drawable/tab_selector.xml" value="0.2985" />
-        <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/activity_detail_user.xml" value="0.25" />
-        <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/activity_detail_user.xml" value="0.47728813559322036" />
+        <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/activity_home.xml" value="0.18802083333333333" />
         <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/activity_splash_screen.xml" value="0.18802083333333333" />
-        <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/fragment_user_list.xml" value="0.18802083333333333" />
         <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/item_row_loading.xml" value="0.36666666666666664" />
         <entry key="..\:/Data/Project/AndroidStudio/Android-BFAA-2022/github-user/app/src/main/res/layout/item_row_user.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Padepokan79/AndroidStudioProjects/dicoding-github-user/app/src/main/res/layout/activity_home.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>
