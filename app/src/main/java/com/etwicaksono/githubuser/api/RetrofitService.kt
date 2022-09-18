@@ -34,10 +34,10 @@ interface RetrofitService {
     fun getUserDetail(@Path("username") username: String): Call<UserDetail>
 
     @GET("search/users")
-    suspend fun searchUser(@Query("q")q:String):Response<ResponseSearchUser>
+    suspend fun searchUser(@Query("q") q: String): Response<ResponseSearchUser>
 
     companion object {
-        var retrofitService: RetrofitService? = null
+        private var retrofitService: RetrofitService? = null
         fun getInstance(): RetrofitService {
             if (retrofitService == null) {
                 val loggingInterceptor = if (BuildConfig.DEBUG) {
@@ -49,7 +49,7 @@ interface RetrofitService {
                 val client = OkHttpClient.Builder().addInterceptor { chain ->
                     val request = chain.request()
                     val builder = request.newBuilder()
-                        .header("Authorization", "Bearer "+BuildConfig.GITHUB_KEY)
+                        .header("Authorization", "Bearer " + BuildConfig.GITHUB_KEY)
                         .method(request.method, request.body)
                     val mutatedRequest = builder.build()
                     val response = chain.proceed(mutatedRequest)

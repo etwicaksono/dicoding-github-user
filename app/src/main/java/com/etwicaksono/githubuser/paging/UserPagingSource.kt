@@ -1,7 +1,6 @@
 package com.etwicaksono.githubuser.paging
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.etwicaksono.githubuser.R
@@ -11,8 +10,8 @@ import com.etwicaksono.githubuser.entity.UsersListItem
 class UserPagingSource(
     private val context: Context,
     private val apiService: RetrofitService,
-    private val page: LiveData<String>,
-    private val username: LiveData<String>
+    private val page: String,
+    private val username: String
 ) :
     PagingSource<Int, UsersListItem>() {
 
@@ -29,19 +28,18 @@ class UserPagingSource(
         return try {
             val position = params.key ?: 1
             val response = when {
-                page.value == context.getString(R.string.follower) && username.value != "" -> username.value?.let {
-                    apiService.getUserFollowers(
-                        it, position
-                    ).body()
-                }
-                page.value == context.getString(R.string.following) && username.value != "" -> username.value?.let {
-                    apiService.getUserFollowing(
-                        it, position
-                    ).body()
-                }
-                page.value == context.getString(R.string.search) -> apiService.searchUser(
-                    username.value ?: ""
+                page == context.getString(R.string.follower) && username != "" -> apiService.getUserFollowers(
+                    username, position
+                ).body()
+
+                page == context.getString(R.string.following) && username != "" -> apiService.getUserFollowing(
+                    username, position
+                ).body()
+
+                page == context.getString(R.string.search) -> apiService.searchUser(
+                    username
                 ).body()?.items
+
                 else -> {
                     apiService.getUsersList(lastDataId).body()
                 }

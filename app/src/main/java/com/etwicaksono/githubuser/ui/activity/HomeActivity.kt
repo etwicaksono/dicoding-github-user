@@ -66,10 +66,16 @@ class HomeActivity : AppCompatActivity() {
                     it?.let { userListPagingAdapter.submitData(lifecycle, it) }
                 }
             }
+
+            isLoading.observe(this@HomeActivity) {
+                binding.progressBar.isVisible = it
+            }
         }
 
         userListPagingAdapter.addLoadStateListener { loadState ->
-            binding.progressBar.isVisible = firstLoading
+            viewModel.isLoading.value =
+                (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) && firstLoading
+
             if (loadState.refresh is LoadState.NotLoading || loadState.append is LoadState.NotLoading) {
                 firstLoading = false
 
@@ -103,12 +109,14 @@ class HomeActivity : AppCompatActivity() {
                         newText?.let {
                             delay(500)
                             if (it.isEmpty()) {
-                                viewModel.page.postValue("home")
-                                viewModel.username.postValue("")
+                                viewModel.page.value = "home"
+                                viewModel.username.value = ""
+                                viewModel.isLoading.value = false
                             } else {
                                 viewModel.page.value =
                                     context?.getString(R.string.search).toString()
                                 viewModel.username.value = it
+                                viewModel.isLoading.value = true
 
                             }
                         }
@@ -117,8 +125,6 @@ class HomeActivity : AppCompatActivity() {
                 }
 
             })
-
-//             Toast.makeText(this@HomeActivity,"halo halo",Toast.LENGTH_SHORT).show()
 
         }
     }
