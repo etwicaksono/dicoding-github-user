@@ -22,7 +22,7 @@
             android:exported="false" />
         <activity
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:name=".ui.activity.home.HomeActivity"
+            android:name=".ui.activity.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.SplashScreenActivity"

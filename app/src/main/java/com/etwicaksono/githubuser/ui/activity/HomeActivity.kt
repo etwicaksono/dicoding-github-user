@@ -107,7 +107,7 @@ class HomeActivity : AppCompatActivity() {
                     searchJob?.cancel()
                     searchJob = coroutineScope.launch {
                         newText?.let {
-                            delay(500)
+//                            delay(500)
                             if (it.isEmpty()) {
                                 viewModel.page.value = "home"
                                 viewModel.username.value = ""
